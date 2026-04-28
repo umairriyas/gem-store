@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-// Make this STATIC - no dynamic changes
+// Static links
 const links = [
   { name: "Home", href: "/" },
   { name: "Emerald", href: "/Emerald" },
@@ -16,7 +16,7 @@ const links = [
   { name: "Ruby", href: "/Ruby" },
   { name: "White Sapphire", href: "/White-sapphire" },
   { name: "Opal", href: "/Opal" },
-] as const; // Add 'as const' to make it truly static
+] as const;
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -34,22 +34,18 @@ export default function Navbar() {
   return (
     <header className="mb-8 border-b bg-white sticky top-0 z-50 shadow-sm">
       <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl py-4">
+        
+        {/* Logo */}
         <Link href="/" className="flex items-center">
           <h1 className="text-2xl md:text-4xl font-bold">
-<<<<<<< HEAD
             Riyas<span className="text-primary">Gems</span>
-=======
-            Raw<span className="text-primary">Gems</span>
->>>>>>> 9b797ef6c3d3f6e9bb5dfcb889d5526308bc3416
           </h1>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden gap-6 lg:flex xl:gap-8 2xl:ml-16">
-          {links.map((link, idx) => (
+          {links.map((link) => (
             <div key={link.href}>
-              {" "}
-              {/* Use href as key instead of idx */}
               {pathname === link.href ? (
                 <Link
                   className="text-base xl:text-lg font-semibold text-primary border-b-2 border-primary pb-1"
@@ -69,8 +65,49 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Rest of your component... */}
+        {/* Right Side (Cart + Mobile Menu) */}
+        <div className="flex items-center gap-4">
+          {/* Cart Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleCartClick}
+            className="relative"
+          >
+            <ShoppingBag size={20} />
+          </Button>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={toggleMobileMenu}
+            className="lg:hidden p-2"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden px-4 pb-4">
+          <nav className="flex flex-col gap-4">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`text-base font-semibold ${
+                  pathname === link.href
+                    ? "text-primary"
+                    : "text-gray-600"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
