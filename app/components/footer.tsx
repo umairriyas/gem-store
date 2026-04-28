@@ -194,7 +194,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
 
-              © 2026 RiyasGems. All rights reserved. | Certified Gemstone Dealer
+              © 2026 Riyas Gems. All rights reserved. | Certified Gemstone Dealer
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <a
