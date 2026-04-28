@@ -36,7 +36,11 @@ export default function Navbar() {
       <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl py-4">
         <Link href="/" className="flex items-center">
           <h1 className="text-2xl md:text-4xl font-bold">
+<<<<<<< HEAD
             Riyas<span className="text-primary">Gems</span>
+=======
+            Raw<span className="text-primary">Gems</span>
+>>>>>>> 9b797ef6c3d3f6e9bb5dfcb889d5526308bc3416
           </h1>
         </Link>
 
