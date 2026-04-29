@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     images: ["https://riyasgems.com/twitter-gemstone.jpg"], // Replace with your actual Twitter image URL
   },
   verification: {
-    google: "your-google-site-verification-code", // 🔁 Add your actual Google Search Console code
+    google: "AXsTQoDpJzdw-QDSQi65S_wYUbP0Xap7G7aeIZ2XeS8", // 🔁 Add your actual Google Search Console code
   },
   category: "jewelry",
   // ✅ Local SEO: Business location & hours for better local ranking
