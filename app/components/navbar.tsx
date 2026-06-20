@@ -14,7 +14,6 @@ const links = [
   { name: "Blue Sapphire", href: "/Blue-sapphire" },
   { name: "Yellow Sapphire", href: "/Yellow-sapphire" },
   { name: "Ruby", href: "/Ruby" },
-  { name: "White Sapphire", href: "/White-sapphire" },
   { name: "Opal", href: "/Opal" },
 ] as const;
 
@@ -34,7 +33,6 @@ export default function Navbar() {
   return (
     <header className="mb-8 border-b bg-white sticky top-0 z-50 shadow-sm">
       <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl py-4">
-        
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <h1 className="text-2xl md:text-4xl font-bold">
@@ -78,10 +76,7 @@ export default function Navbar() {
           </Button>
 
           {/* Mobile Menu Toggle */}
-          <button
-            onClick={toggleMobileMenu}
-            className="lg:hidden p-2"
-          >
+          <button onClick={toggleMobileMenu} className="lg:hidden p-2">
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -97,9 +92,7 @@ export default function Navbar() {
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`text-base font-semibold ${
-                  pathname === link.href
-                    ? "text-primary"
-                    : "text-gray-600"
+                  pathname === link.href ? "text-primary" : "text-gray-600"
                 }`}
               >
                 {link.name}
