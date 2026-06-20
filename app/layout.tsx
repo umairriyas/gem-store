@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://riyasgems.com"),
   title:
     "Riyas Gems | Best Place to Buy Gems in Galle, Sri Lanka – Certified Blue Sapphire & Rare Gemstones",
   description:
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://riyasgems.com",
+    canonical: "./",
   },
   openGraph: {
     title: "Riyas Gems | Natural Gemstones in Galle, Sri Lanka",
