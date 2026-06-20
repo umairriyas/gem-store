@@ -75,10 +75,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
-          <div className="space-y-4">            <h3 className="text-2xl font-bold text-white mb-4">RiyasGems</h3>
-=======
-            <h3 className="text-2xl font-bold text-white mb-4">RawGems</h3>
-
+          <div className="space-y-4">
+            {" "}
+            <h3 className="text-2xl font-bold text-white mb-4">RiyasGems</h3>
             <p className="text-gray-400 leading-relaxed">
               Authentic Sri Lankan gemstones with international certification.
               Your trusted source for premium quality precious stones.
@@ -177,7 +176,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
                 <Phone size={20} className="flex-shrink-0" />
-                <a href="tel:+94123456789">+94 12 345 6789</a>
+                <a href="tel:+94775621554">+94775621554</a>
               </li>
               <li className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
                 <Mail size={20} className="flex-shrink-0" />
@@ -193,8 +192,8 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
-
-              © 2026 Riyas Gems. All rights reserved. | Certified Gemstone Dealer
+              © 2026 Riyas Gems. All rights reserved. | Certified Gemstone
+              Dealer
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <a

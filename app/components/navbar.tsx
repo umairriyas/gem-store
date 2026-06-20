@@ -10,11 +10,9 @@ import { useState } from "react";
 // Static links
 const links = [
   { name: "Home", href: "/" },
-  { name: "Emerald", href: "/Emerald" },
-  { name: "Blue Sapphire", href: "/Blue-sapphire" },
-  { name: "Yellow Sapphire", href: "/Yellow-sapphire" },
-  { name: "Ruby", href: "/Ruby" },
-  { name: "Opal", href: "/Opal" },
+  { name: "Gems", href: "/gems" },
+  { name: "Blog", href: "/blog" },
+  { name: "About", href: "/about-us" },
 ] as const;
 
 export default function Navbar() {
