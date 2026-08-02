@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default function AboutPage() {
-  const whatsappNumber = "94771234567";
+  const whatsappNumber = "94775621554";
   const whatsappMessage =
     "Hi, I visited your About Us page and would like to know more about your gemstones.";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(

@@ -87,7 +87,7 @@ export default function RootLayout({
     image: "https://riyasgems.com/logo.png",
     description:
       "Riyas Gems is a gemstone business in Galle, Sri Lanka, offering natural gemstones and personalized customer support.",
-    telephone: "+94771234567",
+    telephone: "+94775621554",
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",

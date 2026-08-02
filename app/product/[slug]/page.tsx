@@ -82,7 +82,7 @@ export default async function ProductPage({
 
   const productUrl = `https://riyasgems.com/product/${data.slug}`;
 
-  const whatsappNumber = "94771234567";
+  const whatsappNumber = "94775621554";
   const whatsappMessage = `Hi, I'm interested in ${data.name}. Could you please provide more details?`;
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
