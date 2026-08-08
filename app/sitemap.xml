@@ -1,197 +1,77 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+import { MetadataRoute } from "next";
+import { client } from "@/app/lib/sanity";
 
+const BASE_URL = "https://riyasgems.com";
 
-<url>
-  <loc>https://riyasgems.com/</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/Emerald</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/Blue-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/Yellow-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/Ruby</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/White-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/Opal</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/emerald</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/ruby</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/opal</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/all</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/large-opal-cushion-cut-26-80-carats-australia</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-96ct-natural-yellow-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/9-64ct-natural-yellow-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/null</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/0-70ct-natural-unheated-ruby</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-41ct-natural-yellow-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-20ct-natural-emerald</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/3-09ct-natural-blue-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-55ct-natural-emerald-vendor</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/4-98ct-natural-emerald-3-pcs-octagon</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-22-ct-natural-emerald</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-99ct-natural-blue-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-69ct-natural-blue-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/2-56ct-natural-blue-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/2-69ct-natural-yellow-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/0-56ct-natural-unheated-ruby</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-07ct-natural-unheated-ruby</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-00ct-natural-unheated-ruby</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/unheated-ruby-in-cushion-cut-5-08-carats-mozambique-grs-bellerophon</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/0-54ct-natural-unheated-ruby</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/1-85ct-natural-tapered-baguette-white-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/9-96ct-natural-white-sapphire</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/nike-sportswear-phoenix-fleece</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/precious-black-opal-in-cabochon-cut-5-99-carats-australia</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/emerald-ligh</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://riyasgems.com/product/large-white-opal-round-cut-28-53-carats-ethiopia</loc>
-  <lastmod>2026-04-29T14:52:08+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
+async function getProducts() {
+  const query = `*[_type == "product" && defined(slug.current) && slug.current != ""] {
+    "slug": slug.current,
+    _updatedAt
+  }`;
+  return await client.fetch(query);
+}
 
+async function getCategories() {
+  // Pulls every category that actually has products AND a valid slug —
+  // add a new gem type in Sanity and it appears here automatically.
+  const query = `*[_type == "category" && defined(slug.current) && slug.current != ""
+    && count(*[_type == "product" && references(^._id)]) > 0] {
+    "slug": slug.current,
+    _updatedAt
+  }`;
+  return await client.fetch(query);
+}
 
-</urlset>
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [products, categories] = await Promise.all([
+    getProducts(),
+    getCategories(),
+  ]);
+
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 1.0,
+    },
+    {
+      url: `${BASE_URL}/gems`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/about-us`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+  ];
+
+  const categoryRoutes: MetadataRoute.Sitemap = categories.map(
+    (category: { slug: string; _updatedAt: string }) => ({
+      url: `${BASE_URL}/${category.slug}`,
+      lastModified: new Date(category._updatedAt),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }),
+  );
+
+  const productRoutes: MetadataRoute.Sitemap = products.map(
+    (product: { slug: string; _updatedAt: string }) => ({
+      url: `${BASE_URL}/product/${product.slug}`,
+      lastModified: new Date(product._updatedAt),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    }),
+  );
+
+  return [...staticRoutes, ...categoryRoutes, ...productRoutes];
+}

@@ -5,6 +5,8 @@ import { client } from "@/app/lib/sanity";
 import { Truck, MessageCircle, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 async function getData(slug: string) {
   const query = `*[_type == "product" && slug.current == "${slug}"][0] {
@@ -15,6 +17,7 @@ async function getData(slug: string) {
     description,
     "slug": slug.current,
     "categoryName": category->name,
+    "categorySlug": category->slug.current,
     price_id,
     "imageUrl": images[0].asset->url
   }`;
@@ -42,32 +45,74 @@ async function getRelatedProducts(
 
 export const dynamic = "force-dynamic";
 
+// --- SEO: per-product metadata ---
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const data: fullProduct & { imageUrl?: string } = await getData(params.slug);
+
+  if (!data) {
+    return {
+      title: "Product Not Found | Riyas Gems",
+      description:
+        "This gemstone is no longer available. Browse our full collection of natural, certified Sri Lankan gemstones at Riyas Gems.",
+      robots: { index: false, follow: true },
+    };
+  }
+
+  const productUrl = `https://riyasgems.com/product/${data.slug}`;
+  const categoryLabel = data.categoryName ? `${data.categoryName} ` : "";
+  const title = `${data.name} | ${categoryLabel}Gemstone, Sri Lanka | Riyas Gems`;
+
+  const description = data.description
+    ? data.description.slice(0, 155)
+    : `${data.name} — natural ${data.categoryName || "gemstone"} from Sri Lanka, $${data.price}. Certified authentic, sourced direct from Galle. Enquire for certification and pricing.`;
+
+  const ogImage = data.imageUrl || "https://riyasgems.com/og-gemstone.jpg";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: productUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: productUrl,
+      siteName: "Riyas Gems",
+      type: "website",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 1200,
+          alt: data.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
+
 export default async function ProductPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const data: fullProduct & { imageUrl?: string } = await getData(params.slug);
+  const data: fullProduct & { imageUrl?: string; categorySlug?: string } =
+    await getData(params.slug);
 
+  // Real 404 instead of a soft-404 (was returning 200 before)
   if (!data) {
-    return (
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-16">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Product Not Found
-          </h1>
-          <p className="text-gray-600 mb-8">
-            The product you're looking for doesn't exist.
-          </p>
-          <Link
-            href="/"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-          >
-            Back to Home
-          </Link>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
   let relatedProducts: any[] = [];
@@ -91,6 +136,8 @@ export default async function ProductPage({
   const emailBody = `Hi,\n\nI'm interested in the ${data.name} from your ${data.categoryName} collection.\n\nCould you please provide more details about pricing, availability, and certification?\n\nThank you!`;
   const emailUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
+  const categoryHref = data.categorySlug ? `/${data.categorySlug}` : "/gems";
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -111,6 +158,31 @@ export default async function ProductPage({
     },
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://riyasgems.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: data.categoryName || "Gems",
+        item: `https://riyasgems.com${categoryHref}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: data.name,
+        item: productUrl,
+      },
+    ],
+  };
+
   return (
     <>
       <script
@@ -119,9 +191,28 @@ export default async function ProductPage({
           __html: JSON.stringify(productSchema).replace(/</g, "\\u003c"),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
+        }}
+      />
 
       <div className="bg-white">
         <div className="mx-auto max-w-screen-xl px-4 md:px-8">
+          {/* Visible breadcrumb */}
+          <nav className="pt-4 text-sm text-gray-500" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-gray-700">
+              Home
+            </Link>
+            <span className="mx-2">/</span>
+            <Link href={categoryHref} className="hover:text-gray-700">
+              {data.categoryName || "Gems"}
+            </Link>
+            <span className="mx-2">/</span>
+            <span className="text-gray-800">{data.name}</span>
+          </nav>
+
           <div className="grid gap-8 md:grid-cols-2">
             <ImageGallery images={data.images} productName={data.name} />
 

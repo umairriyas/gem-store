@@ -1,6 +1,58 @@
 import Footer from "@/app/components/footer";
 import Link from "next/link";
 import { Gem, ShieldCheck, Globe, Mail, MessageCircle } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Riyas Gems | Trusted Gemstone Dealer in Galle, Sri Lanka",
+  description:
+    "Learn about Riyas Gems — a Galle, Sri Lanka based gemstone business offering natural, certified sapphires, rubies, and emeralds with honest pricing and personal support.",
+  alternates: {
+    canonical: "https://riyasgems.com/about-us",
+  },
+  openGraph: {
+    title: "About Riyas Gems | Trusted Gemstone Dealer in Galle, Sri Lanka",
+    description:
+      "Natural gemstones sourced with care, presented with trust. Learn how Riyas Gems selects and certifies every stone.",
+    url: "https://riyasgems.com/about-us",
+    siteName: "Riyas Gems",
+    type: "website",
+    images: [
+      {
+        url: "https://riyasgems.com/og-gemstone.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Riyas Gems gemstone collection",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Riyas Gems | Trusted Gemstone Dealer in Galle, Sri Lanka",
+    description:
+      "Natural gemstones sourced with care, presented with trust. Learn how Riyas Gems selects and certifies every stone.",
+    images: ["https://riyasgems.com/twitter-gemstone.jpg"],
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://riyasgems.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "About Us",
+      item: "https://riyasgems.com/about-us",
+    },
+  ],
+};
 
 export default function AboutUsPage() {
   const whatsappNumber = "94775621554";
@@ -20,8 +72,23 @@ export default function AboutUsPage() {
 
   return (
     <div className="bg-white text-gray-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+
       <section className="border-b border-gray-100">
         <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24">
+          <nav className="mb-6 text-sm text-gray-500" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-gray-700">
+              Home
+            </Link>
+            <span className="mx-2">/</span>
+            <span className="text-gray-800">About Us</span>
+          </nav>
+
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-amber-700">
             About Riyas Gems
           </p>

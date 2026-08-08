@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 async function getData() {
-  const query = `*[_type == "product"][0...8] | order(_createdAt desc) {
+  const query = `*[_type == "product" && defined(slug.current) && slug.current != ""] | order(_createdAt desc) [0...8] {
         _id,
           price,
         name,
@@ -20,7 +20,10 @@ async function getData() {
 }
 
 export default async function Newest() {
-  const data: simplifiedProduct[] = await getData();
+  const rawData: simplifiedProduct[] = await getData();
+
+  // Belt-and-braces: never render a product with no usable slug
+  const data = rawData.filter((product) => product.slug);
 
   return (
     <div className="bg-white">
@@ -44,7 +47,7 @@ export default async function Newest() {
               <div className="aspect-square w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-80">
                 <Image
                   src={product.imageUrl}
-                  alt="Product image"
+                  alt={`${product.name} - natural ${product.categoryName || "gemstone"} from Sri Lanka`}
                   className="w-full h-full object-cover object-center lg:h-full lg:w-full"
                   width={300}
                   height={300}
