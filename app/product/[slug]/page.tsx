@@ -45,7 +45,6 @@ async function getRelatedProducts(
 
 export const dynamic = "force-dynamic";
 
-// --- SEO: per-product metadata ---
 export async function generateMetadata({
   params,
 }: {
@@ -75,23 +74,14 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: {
-      canonical: productUrl,
-    },
+    alternates: { canonical: productUrl },
     openGraph: {
       title,
       description,
       url: productUrl,
       siteName: "Riyas Gems",
       type: "website",
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 1200,
-          alt: data.name,
-        },
-      ],
+      images: [{ url: ogImage, width: 1200, height: 1200, alt: data.name }],
     },
     twitter: {
       card: "summary_large_image",
@@ -110,7 +100,6 @@ export default async function ProductPage({
   const data: fullProduct & { imageUrl?: string; categorySlug?: string } =
     await getData(params.slug);
 
-  // Real 404 instead of a soft-404 (was returning 200 before)
   if (!data) {
     notFound();
   }
@@ -122,10 +111,12 @@ export default async function ProductPage({
     }
   } catch (error) {
     console.error("Error fetching related products:", error);
-    relatedProducts = [];
   }
 
   const productUrl = `https://riyasgems.com/product/${data.slug}`;
+
+  // Safely convert price to number to prevent string concatenation bugs
+  const numericPrice = Number(data.price);
 
   const whatsappNumber = "94775621554";
   const whatsappMessage = `Hi, I'm interested in ${data.name}. Could you please provide more details?`;
@@ -152,7 +143,7 @@ export default async function ProductPage({
       "@id": `${productUrl}#offer`,
       url: productUrl,
       priceCurrency: "USD",
-      price: data.price,
+      price: numericPrice,
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
     },
@@ -174,12 +165,7 @@ export default async function ProductPage({
         name: data.categoryName || "Gems",
         item: `https://riyasgems.com${categoryHref}`,
       },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: data.name,
-        item: productUrl,
-      },
+      { "@type": "ListItem", position: 3, name: data.name, item: productUrl },
     ],
   };
 
@@ -199,9 +185,16 @@ export default async function ProductPage({
       />
 
       <div className="bg-white">
-        <div className="mx-auto max-w-screen-xl px-4 md:px-8">
+        {/* 
+          FIX FOR RIGHT GAP: 
+          Removed max-w-screen-xl. Now uses w-full with comfortable edge padding.
+        */}
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           {/* Visible breadcrumb */}
-          <nav className="pt-4 text-sm text-gray-500" aria-label="Breadcrumb">
+          <nav
+            className="pt-4 text-sm text-gray-500 max-w-7xl mx-auto"
+            aria-label="Breadcrumb"
+          >
             <Link href="/" className="hover:text-gray-700">
               Home
             </Link>
@@ -210,48 +203,55 @@ export default async function ProductPage({
               {data.categoryName || "Gems"}
             </Link>
             <span className="mx-2">/</span>
-            <span className="text-gray-800">{data.name}</span>
+            <span className="text-gray-800 font-medium">{data.name}</span>
           </nav>
 
-          <div className="grid gap-8 md:grid-cols-2">
+          {/* 
+            FIX FOR RIGHT GAP & 100% WIDTH: 
+            Changed max-w-4xl to max-w-7xl. This stretches the layout to fill 
+            the desktop screen, eliminating the empty right-side gap.
+          */}
+          <div className="flex flex-col gap-8 w-full max-w-7xl mx-auto mt-6">
+            {/* 1. Image Gallery (100% Width of the max-w-7xl container) */}
             <ImageGallery images={data.images} productName={data.name} />
 
-            <div className="md:py-8">
-              <div className="mb-2 md:mb-3">
-                <span className="mb-0.5 inline-block text-gray-500">
+            {/* 2. Product Details & Description (100% Width, under the image) */}
+            <div className="w-full py-4 space-y-6">
+              <div className="mb-2">
+                <span className="mb-0.5 inline-block text-sm font-medium text-amber-600 uppercase tracking-wide">
                   {data.categoryName}
                 </span>
-                <h1 className="text-2xl font-bold text-gray-800 lg:text-3xl">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                   {data.name}
                 </h1>
               </div>
 
-              <div className="mb-4">
-                <div className="flex items-end gap-2">
-                  <span className="text-xl font-bold text-gray-800 md:text-2xl">
-                    ${data.price}
-                  </span>
-                  <span className="mb-0.5 text-red-500 line-through">
-                    ${data.price + 30}
-                  </span>
-                </div>
-
-                <span className="text-sm text-gray-500">
+              <div className="flex flex-wrap items-end gap-3 border-b border-gray-100 pb-6">
+                <span className="text-3xl font-bold text-gray-900">
+                  ${numericPrice.toLocaleString()}
+                </span>
+                <span className="text-lg text-red-500 line-through mb-1">
+                  ${(numericPrice + 30).toLocaleString()}
+                </span>
+                <span className="ml-auto text-sm text-gray-500">
                   Incl. VAT plus shipping
                 </span>
               </div>
 
-              <div className="mb-6 flex items-center gap-2 text-gray-500">
-                <Truck className="w-6 h-6" />
-                <span className="text-sm">2-4 Day Shipping</span>
+              <div className="flex items-center gap-2 text-gray-600">
+                <Truck className="w-5 h-5 text-amber-600" />
+                <span className="text-sm font-medium">2-4 Day Shipping</span>
               </div>
 
-              <p className="mb-8 text-base text-gray-500 tracking-wide">
-                {data.description}
-              </p>
+              {/* Description Text - 100% Width */}
+              <div className="prose prose-gray max-w-none w-full">
+                <p className="text-base md:text-lg leading-relaxed text-gray-700 whitespace-pre-line">
+                  {data.description}
+                </p>
+              </div>
 
-              <div className="border-t pt-8">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              <div className="border-t border-gray-200 pt-8 mt-8">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
                   Interested in this gemstone?
                 </h3>
                 <p className="text-sm text-gray-600 mb-6">
@@ -259,10 +259,10 @@ export default async function ProductPage({
                   personalized assistance.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <a
                     href={emailUrl}
-                    className="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                    className="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3.5 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
                   >
                     <Mail size={20} />
                     INQUIRY BY EMAIL
@@ -272,7 +272,7 @@ export default async function ProductPage({
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                    className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3.5 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 shadow-sm"
                   >
                     <MessageCircle size={20} />
                     WhatsApp us
@@ -286,6 +286,7 @@ export default async function ProductPage({
             </div>
           </div>
 
+          {/* Related Products Section */}
           {relatedProducts && relatedProducts.length > 0 && (
             <div className="mt-16 mb-8">
               <h3 className="text-2xl font-bold text-gray-800 mb-8 text-center">
@@ -309,14 +310,14 @@ export default async function ProductPage({
                         </div>
 
                         <div className="space-y-2">
-                          <h4 className="font-semibold text-gray-800 group-hover:text-primary transition-colors">
+                          <h4 className="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors">
                             {product.name}
                           </h4>
                           <p className="text-sm text-gray-600">
                             {product.categoryName}
                           </p>
                           <p className="font-bold text-gray-900">
-                            $ {product.price.toLocaleString()}
+                            $ {Number(product.price).toLocaleString()}
                           </p>
                         </div>
                       </Link>
@@ -327,8 +328,6 @@ export default async function ProductPage({
           )}
         </div>
 
-        <br />
-        <br />
         <Footer />
       </div>
     </>
