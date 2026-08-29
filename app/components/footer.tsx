@@ -1,232 +1,202 @@
-"use client";
-
-import React, { useState } from "react";
+import Link from "next/link";
 import {
   Mail,
   Phone,
   MapPin,
   Facebook,
   Instagram,
-  Twitter,
   Youtube,
-  Send,
-  ChevronUp,
 } from "lucide-react";
+import NewsletterForm from "./NewsletterForm";
+
+// Set these to the real profiles, or leave the array empty.
+// An icon linking to "#" is worse than no icon.
+const SOCIAL_LINKS: Array<{
+  label: string;
+  href: string;
+  Icon: any;
+  hover: string;
+}> = [
+  // { label: "Facebook", href: "https://facebook.com/...", Icon: Facebook, hover: "hover:bg-blue-600" },
+  // { label: "Instagram", href: "https://instagram.com/...", Icon: Instagram, hover: "hover:bg-pink-600" },
+  // { label: "YouTube", href: "https://youtube.com/...", Icon: Youtube, hover: "hover:bg-red-600" },
+];
+
+// Comment out any entry whose page does not exist yet.
+// Linking to a 404 is worse than linking to "#".
+const QUICK_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Collections", href: "/gems" },
+  { label: "About Us", href: "/about-us" },
+  { label: "Blog", href: "/blog" },
+  // { label: "Contact", href: "/contact" },
+];
+
+// Lowercase to match the canonical category routes.
+// Pink Sapphire and Alexandrite removed: no such category exists in Sanity.
+const GEM_LINKS = [
+  { label: "Blue Sapphire", href: "/blue-sapphire" },
+  { label: "Yellow Sapphire", href: "/yellow-sapphire" },
+  { label: "White Sapphire", href: "/white-sapphire" },
+  { label: "Ruby", href: "/ruby" },
+  { label: "Emerald", href: "/emerald" },
+  { label: "Moonstone", href: "/moonstone" },
+];
+
+const POLICY_LINKS: Array<{ label: string; href: string }> = [
+  // { label: "Privacy Policy", href: "/privacy-policy" },
+  // { label: "Terms of Service", href: "/terms-of-service" },
+  // { label: "Shipping Policy", href: "/shipping-policy" },
+];
+
+const linkClass =
+  "text-gray-400 hover:text-blue-400 hover:pl-2 transition-all duration-300 inline-block";
+const socialClass =
+  "p-2 bg-slate-700 rounded-full transition-all transform hover:scale-110";
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email) {
-      setSubscribed(true);
-      setTimeout(() => {
-        setSubscribed(false);
-        setEmail("");
-      }, 3000);
-    }
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const year = new Date().getFullYear();
 
   return (
     <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-gray-300">
-      {/* Newsletter Section */}
       <div className="border-b border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-center md:text-left">
-              <h3 className="text-2xl font-bold text-white mb-2">
+              <h2 className="text-2xl font-bold text-white mb-2">
                 Stay Updated with RiyasGems
-              </h3>
+              </h2>
               <p className="text-gray-400">
                 Get exclusive offers and latest gemstone collections
               </p>
             </div>
-            <div className="flex w-full md:w-auto gap-2">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="flex-1 md:w-80 px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              />
-              <button
-                onClick={handleSubscribe}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all transform hover:scale-105 flex items-center gap-2"
-              >
-                <Send size={18} />
-                Subscribe
-              </button>
-            </div>
+            <NewsletterForm />
           </div>
-          {subscribed && (
-            <div className="mt-4 text-center md:text-right text-green-400 font-semibold animate-pulse">
-              ✓ Thank you for subscribing!
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* About Section */}
           <div className="space-y-4">
-            {" "}
-            <h3 className="text-2xl font-bold text-white mb-4">RiyasGems</h3>
+            <h2 className="text-2xl font-bold text-white mb-4">RiyasGems</h2>
             <p className="text-gray-400 leading-relaxed">
-              Authentic Sri Lankan gemstones with international certification.
-              Your trusted source for premium quality precious stones.
+              Natural gemstones with international certification. Your trusted
+              source for premium quality precious stones.
             </p>
-            <div className="flex gap-4 pt-4">
-              <a
-                href="#"
-                className="p-2 bg-slate-700 rounded-full hover:bg-blue-600 transition-all transform hover:scale-110"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="#"
-                className="p-2 bg-slate-700 rounded-full hover:bg-pink-600 transition-all transform hover:scale-110"
-              >
-                <Instagram size={20} />
-              </a>
-              <a
-                href="#"
-                className="p-2 bg-slate-700 rounded-full hover:bg-blue-400 transition-all transform hover:scale-110"
-              >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="#"
-                className="p-2 bg-slate-700 rounded-full hover:bg-red-600 transition-all transform hover:scale-110"
-              >
-                <Youtube size={20} />
-              </a>
-            </div>
+
+            {SOCIAL_LINKS.length > 0 ? (
+              <div className="flex gap-4 pt-4">
+                {SOCIAL_LINKS.map((social) => (
+                  <Link
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className={socialClass + " " + social.hover}
+                  >
+                    <social.Icon size={20} aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            ) : null}
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">
+            <h2 className="text-lg font-semibold text-white mb-4">
               Quick Links
-            </h4>
+            </h2>
             <ul className="space-y-3">
-              {[
-                "Home",
-                "Collections",
-                "About Us",
-                "Certifications",
-                "Blog",
-                "Contact",
-              ].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-blue-400 hover:pl-2 transition-all duration-300 inline-block"
-                  >
-                    {item}
-                  </a>
+              {QUICK_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={linkClass}>
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Gemstone Categories */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Our Gems</h4>
+            <h2 className="text-lg font-semibold text-white mb-4">Our Gems</h2>
             <ul className="space-y-3">
-              {[
-                "Blue Sapphire",
-                "Yellow Sapphire",
-                "Pink Sapphire",
-                "Ruby",
-                "Emerald",
-                "Alexandrite",
-              ].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-gray-400 hover:text-blue-400 hover:pl-2 transition-all duration-300 inline-block"
-                  >
-                    {item}
-                  </a>
+              {GEM_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={linkClass}>
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">
+            <h2 className="text-lg font-semibold text-white mb-4">
               Contact Us
-            </h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-gray-400 hover:text-white transition-colors">
-                <MapPin size={20} className="mt-1 flex-shrink-0" />
-                <span>
-                  Galle, Sri Lanka
-                  <br />
-                  Coastal gem side of the Island
-                </span>
-              </li>
-              <li className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
-                <Phone size={20} className="flex-shrink-0" />
-                <a href="tel:+94775621554">+94775621554</a>
-              </li>
-              <li className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
-                <Mail size={20} className="flex-shrink-0" />
-                <a href="mailto:info@rawgems.lk">info@rawgems.lk</a>
-              </li>
-            </ul>
+            </h2>
+            <address className="not-italic">
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3 text-gray-400">
+                  <MapPin
+                    size={20}
+                    className="mt-1 flex-shrink-0"
+                    aria-hidden="true"
+                  />
+                  {/* Replace with the full Gintota street address. The meta
+                      description already claims Gintota; the site never shows it. */}
+                  <span>
+                    Galle, Sri Lanka
+                    <br />
+                    Coastal gem side of the Island
+                  </span>
+                </li>
+                <li className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
+                  <Phone
+                    size={20}
+                    className="flex-shrink-0"
+                    aria-hidden="true"
+                  />
+                  <Link href="tel:+94775621554">+94 77 562 1554</Link>
+                </li>
+                <li className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors">
+                  <Mail
+                    size={20}
+                    className="flex-shrink-0"
+                    aria-hidden="true"
+                  />
+                  {/* Was info@rawgems.lk, a different domain from the rest of the site. */}
+                  <Link href="mailto:info@riyasgems.com">
+                    info@riyasgems.com
+                  </Link>
+                </li>
+              </ul>
+            </address>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
-              © 2026 Riyas Gems. All rights reserved. | Certified Gemstone
-              Dealer
+              © {year} Riyas Gems. All rights reserved.
             </p>
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                Privacy Policy
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                Terms of Service
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                Shipping Policy
-              </a>
-            </div>
+            {POLICY_LINKS.length > 0 ? (
+              <div className="flex flex-wrap justify-center gap-6 text-sm">
+                {POLICY_LINKS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
-
-      {/* Scroll to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        aria-label="Scroll to top"
-      >
-        <ChevronUp size={24} />
-      </button>
     </footer>
   );
 }

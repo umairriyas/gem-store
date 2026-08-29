@@ -1,109 +1,109 @@
 import { MetadataRoute } from "next";
-import { client } from "@/app/lib/sanity";
+import { client } from "@/sanity/lib/client";
 
 const BASE_URL = "https://riyasgems.com";
 
-// 1. Define a strict type for Sanity query responses to prevent TypeScript errors
-interface SitemapEntry {
+// Revalidate hourly so lastmod reflects Sanity edits without a redeploy.
+export const revalidate = 3600;
+
+type ProductRow = {
   slug: string;
-  _updatedAt: string;
-}
+  updatedAt: string;
+  category: string | null;
+};
 
-// 2. Fetch ALL published products (detects new ones automatically)
-async function getProducts(): Promise<SitemapEntry[]> {
-  const query = `*[_type == "product" && defined(slug.current) && slug.current != ""] {
+type PostRow = {
+  slug: string;
+  updatedAt: string;
+};
+
+const PRODUCTS_QUERY = `
+  *[_type == "product" && defined(slug.current)] | order(_updatedAt desc) {
     "slug": slug.current,
-    _updatedAt
-  }`;
-  return await client.fetch(query);
-}
+    "updatedAt": _updatedAt,
+    "category": category
+  }
+`;
 
-// 3. Fetch ALL blog posts (adjust "post" to "blog" if your Sanity schema uses that type)
-async function getBlogPosts(): Promise<SitemapEntry[]> {
-  const query = `*[_type == "post" && defined(slug.current) && slug.current != ""] {
+const POSTS_QUERY = `
+  *[_type == "post" && defined(slug.current)] | order(_updatedAt desc) {
     "slug": slug.current,
-    _updatedAt
-  }`;
-  return await client.fetch(query);
-}
+    "updatedAt": _updatedAt
+  }
+`;
 
-// 4. Fetch ALL gem categories
-async function getCategories(): Promise<SitemapEntry[]> {
-  const query = `*[_type == "category" && defined(slug.current) && slug.current != ""] {
-    "slug": slug.current,
-    _updatedAt
-  }`;
-  return await client.fetch(query);
+function toSlug(category: string): string {
+  return category.trim().toLowerCase().replace(/\s+/g, "-");
 }
-
-// 5. Force Next.js to always fetch fresh data from Sanity (instant new product detection)
-export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Fetch all dynamic data in parallel for maximum speed
-  const [products, blogPosts, categories] = await Promise.all([
-    getProducts(),
-    getBlogPosts(),
-    getCategories(),
+  const [products, posts] = await Promise.all([
+    client.fetch<ProductRow[]>(PRODUCTS_QUERY),
+    client.fetch<PostRow[]>(POSTS_QUERY),
   ]);
 
-  // --- STATIC ROUTES (High Priority Focus) ---
-  const staticRoutes: MetadataRoute.Sitemap = [
+  // Newest content date drives lastmod on index pages, not build time.
+  const newestProduct = products[0]?.updatedAt;
+  const newestPost = posts[0]?.updatedAt;
+
+  // Distinct categories, lowercased to match the canonical route form.
+  const categoryMap = new Map<string, string>();
+  for (const p of products) {
+    if (!p.category) continue;
+    const slug = toSlug(p.category);
+    const current = categoryMap.get(slug);
+    if (!current || p.updatedAt > current) {
+      categoryMap.set(slug, p.updatedAt);
+    }
+  }
+
+  const staticEntries: MetadataRoute.Sitemap = [
     {
       url: `${BASE_URL}/`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 1.0, // Highest priority for Homepage
+      lastModified: newestProduct ? new Date(newestProduct) : undefined,
+      priority: 1,
     },
     {
       url: `${BASE_URL}/gems`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9, // High priority for main shop page
+      lastModified: newestProduct ? new Date(newestProduct) : undefined,
+      priority: 0.9,
     },
     {
       url: `${BASE_URL}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9, // High priority for Blog index
+      lastModified: newestPost ? new Date(newestPost) : undefined,
+      priority: 0.7,
     },
     {
-      url: `${BASE_URL}/about`, // Change to "/about-us" if your route is different
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8, // Solid priority for About page
+      // /about is a duplicate and now 301s here. Only this URL belongs in the sitemap.
+      url: `${BASE_URL}/about-us`,
+      priority: 0.5,
     },
   ];
 
-  // --- DYNAMIC CATEGORY ROUTES ---
-  const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
-    url: `${BASE_URL}/${category.slug}`,
-    lastModified: new Date(category._updatedAt),
-    changeFrequency: "weekly",
-    priority: 0.7,
+  const categoryEntries: MetadataRoute.Sitemap = Array.from(
+    categoryMap.entries()
+  ).map(([slug, updatedAt]) => ({
+    url: `${BASE_URL}/${slug}`,
+    lastModified: new Date(updatedAt),
+    priority: 0.8,
   }));
 
-  // --- DYNAMIC PRODUCT ROUTES (Auto-detects new uploads) ---
-  const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
-    url: `${BASE_URL}/product/${product.slug}`,
-    lastModified: new Date(product._updatedAt),
-    changeFrequency: "weekly", // Change to "daily" if you upload products multiple times a day
+  const productEntries: MetadataRoute.Sitemap = products.map((p) => ({
+    url: `${BASE_URL}/product/${p.slug}`,
+    lastModified: new Date(p.updatedAt),
     priority: 0.6,
   }));
 
-  // --- DYNAMIC BLOG POST ROUTES ---
-  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
-    url: `${BASE_URL}/blog/${post.slug}`,
-    lastModified: new Date(post._updatedAt),
-    changeFrequency: "weekly",
+  const postEntries: MetadataRoute.Sitemap = posts.map((p) => ({
+    url: `${BASE_URL}/blog/${p.slug}`,
+    lastModified: new Date(p.updatedAt),
     priority: 0.6,
   }));
 
-  // Combine all routes and return
   return [
-    ...staticRoutes,
-    ...categoryRoutes,
-    ...productRoutes,
-    ...blogRoutes,
+    ...staticEntries,
+    ...categoryEntries,
+    ...productEntries,
+    ...postEntries,
   ];
 }
