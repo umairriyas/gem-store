@@ -9,6 +9,9 @@ import type { NextRequest } from "next/server";
  * /blue-sapphire. This cannot live in next.config.ts redirects because Next's
  * path matching is case-insensitive, which turns a case-only redirect into a
  * loop.
+ *
+ * MUST live at the project root, next to next.config.ts. Next.js does not
+ * read middleware from inside app/.
  */
 
 // Paths middleware must never touch.
@@ -46,8 +49,8 @@ export function middleware(request: NextRequest) {
 
   const normalised = segment.toLowerCase();
 
-  // Exact string comparison — no loop, because this only fires when the
-  // incoming path genuinely differs from its lowercase form.
+  // Exact string comparison, so no loop: this only fires when the incoming
+  // path genuinely differs from its lowercase form.
   if (segment === normalised) return NextResponse.next();
 
   const url = request.nextUrl.clone();
